@@ -1,0 +1,97 @@
+ <select id="getCourseWareList" parameterType="String" resultType="com.classroom.dto.CoursewareDto">
+ 	select temp.*,nvl(userstudy.id,0) isStudy,to_char(userstudy.update_date,'mm"月"dd"日"') updateDate,userstudy.is_complete
+ 	from (
+ 	select classify.classify_name classifyName,ourseware.ID,ourseware.COURSEWARE_ID,ourseware.COURSEWARE_TYPE,ourseware.COURSEWARE_TITLE,ourseware.COURSEWARE_VIDEOURL
+ 	,ourseware.COURSEWARE_IMGURL,ourseware.COURSEWARE_CONTENTURL,ourseware.COURSEWARE_DESC,ourseware.COURSEWARE_AUTHOR
+ 	,ourseware.VALID_FALG,ourseware.CREATE_DATE,ourseware.CREATE_BY,ourseware.REMARK,ourseware.COURSEWARE_CONTENT
+ 	from classroom_course_dir courseDir,classroom_ourseware ourseware,classroom_ourse_classify classify
+ 	,classroom_course course 
+ 	where courseDir.course_id = #{courseId} and courseDir.course_id = course.course_id and course.valid_falg = 1 and course.course_classify_id = classify.classify_id
+ 	and courseDir.courseware_id = ourseware.courseware_id
+ 	and ourseware.valid_falg = 1 
+ 	order by courseDir.sort asc
+ 	) temp left join (
+ 	select id,courseware_id,update_date,is_complete
+ 	from classroom_userstudy
+ 	where course_id = #{courseId}
+ 	) userstudy on temp.courseware_id = userstudy.courseware_id
+ </select>
+
+
+ <select id="getClassroomOurseware" parameterType="Int" resultMap="BaseResultMap">
+ 	select * from CLASSROOM_OURSEWARE where courseware_id = #{coursewareId}
+ </select>
+
+
+       <!-- 
+    userStudyCount：已经学完的视频或图文个数
+    studyCount:加入学习的人数 -->
+    <select id="getCourseDetail" parameterType="String" resultType="com.classroom.dto.CourseDetailDto">
+    	select course_title courseTitle,label_id labelId,course_desc courseDesc,course_author courseAuthor,course_imgurl courseImgurl
+    	,(select count(1) from classroom_userstudy where course_id = #{courseId} and user_id = #{userId} and study_schedule='1') userStudyCount
+    	,(select count(distinct user_id) from classroom_userstudy where course_id = #{courseId}) studyCount
+    	,(select count(1) from classroom_usercollect where user_id = #{userId} and course_id = #{courseId} and valid_falg = 1) isCollect
+    	from classroom_course
+    	where course_id = #{courseId} and valid_falg = 1
+    </select>
+
+
+
+
+
+
+    <sql id="selectCoursewareVo">
+    	select COURSEWARE_ID, COURSEWARE_TYPE, COURSEWARE_TITLE, COURSEWARE_VIDEOURL, COURSEWARE_IMGURL, COURSEWARE_CONTENTURL, COURSEWARE_DESC, COURSEWARE_AUTHOR, VALID_FALG, CREATE_DATE, CREATE_BY, REMARK,COURSEWARE_CONTENT,MODIFY_DATE,DURATION,COMCODE,START_DATE,END_DATE 
+    	from CLASSROOM_OURSEWARE
+    </sql>
+
+    <select id="selectCoursewareList" parameterType="com.allianity.classroom.domain.ClassroomOurseware" resultMap="BaseResultMap">
+    	<include refid="selectCoursewareVo"/>
+    	<where>
+    		<if test="coursewareTitle != null and coursewareTitle != ''">
+    			AND courseware_title like concat(concat('%',#{coursewareTitle}),'%')
+    		</if>
+    		<if test="coursewareType != null and coursewareType != ''">
+    			AND courseware_type like concat(concat('%',#{coursewareType}),'%')
+    		</if>
+    		<if test="validFalg != null and validFalg != ''">
+    			AND validFalg = #{validFalg}
+    		</if>
+    		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+    			and create_date &gt;= to_date(#{params.beginTime},'yyyy-MM-dd HH24:mi:ss')
+    		</if>
+    		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+    			and create_date &lt;= to_date(#{params.endTime},'yyyy-MM-dd HH24:mi:ss') 
+    		</if>
+    	</where>
+    </select>
+
+
+
+    <sql id="Base_cols">
+       id,create_date,modify_date,paper_id,question_id,is_delete
+   </sql>
+
+<select id="getExamPaperQuDetail" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select  <include refid="Base_cols"></include>
+    from classroom_exam_paper_qu
+    where paper_id = #{paperId} and question_id = #{questionId}
+</select>
+
+oracle查询两个日期之间的数据：
+select id id, name name,start_date start_date,end_date end_date from classroom_exam 
+where  to_char(sysdate,'yyyy-mm-dd') between to_char(start_date,'yyyy-mm-dd') and to_char(end_date,'yyyy-mm-dd') and
+exam_channel=4 and exam_comcode=86
+
+
+<!-- oracle字符串包含的问题  instr-->
+https://blog.csdn.net/xieedeni/article/details/85126371
+<select id="getClassifyList" parameterType="String" resultMap="BaseResultMap">
+  select * from  classroom_ourse_classify where status='1'
+       and comcode=#{comcode}
+       and instr(','||channel_id||',',','||#{channel}||',')>0
+</select>
+
+
+<!-- 关于执行顺序 -->
+from > where > group by > having > select > order by

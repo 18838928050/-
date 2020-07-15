@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.allianity.classroom.mapper.ClassroomCoursewareMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.allianity.classroom.domain.ClassroomOurseware">
+        <id column="COURSEWARE_ID" property="coursewareId" />
+        <result column="ID" property="id" />
+        <result column="COURSEWARE_TYPE" property="coursewareType" />
+        <result column="COURSEWARE_TITLE" property="coursewareTitle" />
+        <result column="COURSEWARE_VIDEOURL" property="coursewareVideourl" />
+        <result column="COURSEWARE_IMGURL" property="coursewareImgurl" />
+        <result column="COURSEWARE_CONTENTURL" property="coursewareContenturl" />
+        <result column="COURSEWARE_DESC" property="coursewareDesc" />
+        <result column="COURSEWARE_AUTHOR" property="coursewareAuthor" />
+        <result column="VALID_FALG" property="validFalg" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="CREATE_BY" property="createBy" />
+        <result column="COURSEWARE_CONTENT" property="coursewareContent" />
+        <result column="MODIFY_DATE" property="modifyDate" />
+        <result column="DURATION" property="duration" />
+        <result column="COMCODE" property="comcode" />
+        <result column="START_DATE" property="startDate"/>
+        <result column="END_DATE" property="endDate"/>
+        <result column="DEPT_NAME" property="deptName"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, COURSEWARE_ID, COURSEWARE_TYPE, COURSEWARE_TITLE, COURSEWARE_VIDEOURL, COURSEWARE_IMGURL, COURSEWARE_CONTENTURL, COURSEWARE_DESC, COURSEWARE_AUTHOR, VALID_FALG, CREATE_DATE, CREATE_BY, REMARK,COURSEWARE_CONTENT,MODIFY_DATE,DURATION,COMCODE,START_DATE,END_DATE
+    </sql>
+    
+    <sql id="selectCoursewareVo">
+		select COURSEWARE_ID, COURSEWARE_TYPE, COURSEWARE_TITLE, COURSEWARE_VIDEOURL, COURSEWARE_IMGURL, COURSEWARE_CONTENTURL, COURSEWARE_DESC, COURSEWARE_AUTHOR, VALID_FALG, CREATE_DATE, CREATE_BY, REMARK,COURSEWARE_CONTENT,MODIFY_DATE,DURATION,COMCODE,START_DATE,END_DATE 
+		from CLASSROOM_OURSEWARE
+	</sql>
+    
+    <select id="selectCoursewareList" parameterType="com.allianity.classroom.domain.ClassroomOurseware" resultMap="BaseResultMap">
+	    <include refid="selectCoursewareVo"/>
+	    <where>
+		    <if test="coursewareTitle != null and coursewareTitle != ''">
+				AND courseware_title like concat(concat('%',#{coursewareTitle}),'%')
+			</if>
+			 <if test="coursewareType != null and coursewareType != ''">
+				AND courseware_type like concat(concat('%',#{coursewareType}),'%')
+			</if>
+			<if test="validFalg != null and validFalg != ''">
+				AND validFalg = #{validFalg}
+			</if>
+			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				and create_date &gt;= to_date(#{params.beginTime},'yyyy-MM-dd HH24:mi:ss')
+			</if>
+			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				and create_date &lt;= to_date(#{params.endTime},'yyyy-MM-dd HH24:mi:ss') 
+			</if>
+	    </where>
+	</select>
+	
+	<insert id="insertCourseware" parameterType="com.allianity.classroom.domain.ClassroomOurseware">
+ 	    <selectKey keyProperty="coursewareId" resultType="int" order="BEFORE">
+			SELECT SEQ_COURSEWAREID.NEXTVAL as coursewareId FROM DUAL
+		</selectKey>
+ 		insert into CLASSROOM_OURSEWARE(
+ 			id,
+ 		    <if test="coursewareId != null and coursewareId != 0">COURSEWARE_ID,</if>
+ 			<if test="coursewareType != null and coursewareType != ''">COURSEWARE_TYPE,</if>
+ 			<if test="coursewareTitle != null and coursewareTitle != ''">COURSEWARE_TITLE,</if>
+ 			<if test="coursewareVideourl != null">COURSEWARE_VIDEOURL,</if>
+ 			<if test="coursewareImgurl != null and coursewareImgurl != ''">COURSEWARE_IMGURL,</if>
+ 			<if test="coursewareContenturl != null and coursewareContenturl != ''">COURSEWARE_CONTENTURL,</if>
+ 			<if test="coursewareDesc != null and coursewareDesc != ''">COURSEWARE_DESC,</if>
+ 			<if test="coursewareAuthor != null and coursewareAuthor != ''">COURSEWARE_AUTHOR,</if>
+ 			<if test="validFalg != null and validFalg != ''">VALID_FALG,</if>
+ 			<if test="createBy != null and createBy != ''">CREATE_BY,</if>
+ 			<if test="remark != null and remark != ''">REMARK,</if>
+ 			<if test="coursewareContent != null and coursewareContent != ''">COURSEWARE_CONTENT,</if>
+ 			<if test="duration != null and duration != ''">DURATION,</if>
+ 			<if test="comcode != null and comcode != ''">comcode,</if>
+ 			start_date,
+ 			end_date,
+ 			create_date,modify_date
+ 		)values(
+ 			rawtohex(sys_guid()),
+ 			<if test="coursewareId != null and coursewareId != 0">#{coursewareId},</if>
+ 			<if test="coursewareType != null and coursewareType != ''">#{coursewareType},</if>
+ 			<if test="coursewareTitle != null and coursewareTitle != ''">#{coursewareTitle},</if>
+ 			<if test="coursewareVideourl != null and coursewareVideourl != ''">#{coursewareVideourl},</if>
+ 			<if test="coursewareImgurl != null and coursewareImgurl != ''">#{coursewareImgurl},</if>
+ 			<if test="coursewareContenturl != null and coursewareContenturl != ''">#{coursewareContenturl},</if>
+ 			<if test="coursewareDesc != null and coursewareDesc != ''">#{coursewareDesc},</if>
+ 			<if test="coursewareAuthor != null and coursewareAuthor != ''">#{coursewareAuthor},</if>
+ 			<if test="validFalg != null and validFalg != ''">#{validFalg},</if>
+ 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			<if test="remark != null and remark != ''">#{remark},</if>
+ 			<if test="coursewareContent != null and coursewareContent != ''">#{coursewareContent},</if>
+ 			<if test="duration != null and duration != ''">#{duration},</if>
+ 			<if test="comcode != null and comcode != ''">#{comcode},</if>
+ 			#{startDate},
+ 			#{endDate},
+ 			sysdate,sysdate
+ 		)
+	</insert>
+	
+	<select id="selectCoursewareByCoursewareId" parameterType="Int" resultMap="BaseResultMap">
+			select ourseware.*,dept.dept_name
+			from CLASSROOM_OURSEWARE ourseware
+			left join sys_dept dept  on ourseware.comcode = dept.dept_id
+			where ourseware.COURSEWARE_ID = #{coursewareId}
+	</select>
+	
+	<update id="updateClassroomOWById" parameterType="com.allianity.classroom.domain.ClassroomOurseware">
+ 		update classroom_ourseware
+ 		<set>
+ 			<if test="coursewareId != null and coursewareId != 0">COURSEWARE_ID=#{coursewareId},</if>
+ 			<if test="coursewareType != null and coursewareType != ''">COURSEWARE_TYPE=#{coursewareType},</if>
+ 			<if test="coursewareTitle != null and coursewareTitle != ''">COURSEWARE_TITLE=#{coursewareTitle},</if>
+ 			<if test="coursewareVideourl != null and coursewareVideourl != ''">COURSEWARE_VIDEOURL = #{coursewareVideourl},</if>
+ 			<if test="coursewareImgurl != null and coursewareImgurl != ''">COURSEWARE_IMGURL = #{coursewareImgurl},</if>
+ 			<if test="coursewareContenturl != null and coursewareContenturl != ''">COURSEWARE_CONTENTURL = #{coursewareContenturl},</if>
+ 			<if test="coursewareDesc != null and coursewareDesc != ''">COURSEWARE_DESC = #{coursewareDesc},</if>
+ 			<if test="coursewareAuthor != null and coursewareAuthor != ''">COURSEWARE_AUTHOR = #{coursewareAuthor},</if>
+ 			<if test="validFalg != null and validFalg != ''">VALID_FALG = #{validFalg},</if>
+ 			<if test="remark != null and remark != ''">REMARK = #{remark},</if>
+ 			<if test="coursewareContent != null and coursewareContent != ''">COURSEWARE_CONTENT = #{coursewareContent},</if>
+ 			 <if test="duration != null and duration != ''">duration = #{duration},</if> 
+ 			 <if test="comcode != null and comcode != ''">comcode = #{comcode},</if> 
+ 			 start_date=#{startDate},
+ 			end_date=#{endDate},
+ 			modify_date = sysdate
+ 		</set>
+ 		where courseware_id = #{coursewareId}
+	</update>
+	
+	 <update id="deleteCoursewareById" parameterType="int">
+	    update classroom_ourseware set VALID_FALG=0 where courseware_id=#{coursewareId}
+ 	</update>
+ 	
+ 	
+</mapper>
+ 

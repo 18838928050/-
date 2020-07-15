@@ -1,0 +1,16 @@
+线上运行jar包：
+nohub java -jar  aaa.jar &
+
+
+查看进程：
+ps -ef|grep java
+
+杀死进程：
+kill -9 端口名
+
+查看日志
+tail -100f log.txt
+
+
+线上发布：
+nohup java -jar allianity-admin-fieldwork.jar --spring.profiles.active=dev &

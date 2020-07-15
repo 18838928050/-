@@ -1,0 +1,212 @@
+倒计时，滚动监控，如果滚动到底和时间到，学习完成
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-touch-fullscreen" content="YES">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="pragram" content="no-cache">
+<title>图文详情</title>
+<!--css重置-->
+<link rel="stylesheet" type="text/css" href="../css/css_reset.css"/>
+<script type="text/javascript" src="../js/rem.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/imageText.css"/>
+<link rel="stylesheet" type="text/css" href="../dist/css/mui.min.css"/>
+
+</head>
+	<body>
+		<div class="imageText_box">
+		    <div class="imageText_title" id="title"></div>
+			<div class="imageText_author" id="author"></div>
+			<div id="content1" style="display: none;">[[${content}]]</div>
+			<div class="imageText_contBox" id="content2">
+		</div>
+		</div>
+		
+		<div class="countDown_box" id="countDown">
+			<div class="countDown">
+				<img class="countDown_Icon" src="../images/countDown_IMG.png" alt=""/>
+				<div class="progressBar_box">
+					<div class="progressBar">
+						<div class="progressBar_rod" id="rod" style="width: 0;"></div>
+					</div>
+				</div>
+				<div class="progressTips" id="progressTips">进度 0%</div>
+			</div>
+			
+		</div>
+		
+		<!-- 设置页面是否滚动到底部 “0”没有滚动到过 “1”滚动到过 -->
+		<input type="hidden" name="judgeScroll" value="0"/>
+		
+		<script type="text/javascript" src="../js/jquery-2.1.0.js"></script>
+		<script type="text/javascript" src="../dist/js/mui.min.js"></script>
+		<script type="text/javascript">
+		var title = '[[${title}]]';
+		var author = '[[${author}]]';
+		var classifyName = '[[${classifyName}]]';
+		var duration= '[[${duration}]]';
+		
+		var userId='[[${userId}]]';
+		var courseId='[[${courseid}]]';
+		var coursewareId='[[${coursewareid}]]';
+		var isComplete='[[${isComplete}]]';
+		var  newComplete=1;
+		$("#title").text(classifyName+"|"+title);
+		$("#author").text("作者："+author);
+		//$(".duration").text("时长："+duration);
+		$("#content2").html($("#content1").text());
+		
+			$(function(){
+				//在内容高度小于屏幕可见高度时
+				if($(document).height() <= $(window).height()){
+					$("#countDown").show();
+					$("input[name='judgeScroll']").val("1");
+				}
+				//刷新页面滚距离大于0时
+				if($(window).scrollTop() > 0){
+					$("#countDown").show();
+				}
+				//定时器
+				var ref = ""; 
+				//设置初始时间（秒）
+				var i = 0;
+				//设置最少阅读时间（分钟）
+				var setUpTime = duration; 
+				if(isComplete==1){
+					$("#countDown").show();
+					$("#rod").css({"width":"100%"});
+					$("#progressTips").text("学习完成");
+					clearInterval(ref);//清除定时器
+				}else{
+					
+						$(window).scroll(function () {
+							$("#countDown").show();
+							var scrollHeight = $(document).height();
+						    var scrollTop = $(this).scrollTop();
+						    var windowHeight = $(this).height();
+						    if (scrollHeight - (scrollTop + windowHeight) >= 0 && scrollHeight - (scrollTop + windowHeight) < 20) {
+								
+								$("input[name='judgeScroll']").val("1");
+								if(i >= setUpTime*60){
+									$("#rod").css({"width":"100%"});
+									$("#progressTips").text("学习完成");
+									if(newComplete==1){
+									 judgeStudy();
+									 newComplete=2;
+									}
+									clearInterval(ref);//清除定时器
+								}
+							}
+						   
+						});
+					
+					
+					//每3秒执行一次
+					ref = setInterval(function(){
+						if(newComplete==1){
+							consoleLog();
+						}
+					},3000); 
+				}
+			
+				function consoleLog(){
+					i = i+3;
+					var scaleVal = i/(setUpTime*60)*100;
+					scaleVal = scaleVal.toFixed(2);
+					if(i >= setUpTime*60){
+						var judgeScrollVal = $("input[name='judgeScroll']").val();
+						if(judgeScrollVal == "1"){
+							$("#rod").css({"width":"100%"});
+							$("#progressTips").text("学习完成");
+							judgeStudy();
+							 newComplete=2;
+							
+							clearInterval(ref);//清除定时器
+						}else{
+							$("#rod").css({"width": "99%"});
+							$("#progressTips").text("进度 99%");
+						}
+					}else{
+						$("#rod").addClass("animationStyle");
+						$("#rod").css({"width": scaleVal +"%"});
+						$("#progressTips").text("进度 "+scaleVal+"%");
+					}
+				}
+				
+			})
+			
+			initDialog();
+			//悬浮按钮屏幕可拖动
+			function initDialog(){
+				var demo= $("#countDown");
+				var contW = $("#countDown").width();
+				var contH = $("#countDown").height();
+				var startX, startY, sX, sY, moveX, moveY, disX, disY;
+				var winW = $(window).width();
+				var winH = $(window).height();
+				demo.on({
+					touchstart: function(e) {
+						startX = e.originalEvent.targetTouches[0].pageX;
+						startY = e.originalEvent.targetTouches[0].pageY;
+						sX = $(this).offset().left;
+						sY = $(this).offset().top;
+						leftX = startX - sX;
+						rightX = winW - contW + leftX;
+						topY = startY - sY
+						bottomY = winH - contH + topY;
+					},
+					touchmove: function(e) {
+						e.preventDefault();
+						moveX = e.originalEvent.targetTouches[0].clientX;
+						moveY = e.originalEvent.targetTouches[0].clientY;
+						if (moveX < leftX) {
+							moveX = leftX;
+						}
+						if (moveX > rightX) {
+							moveX = rightX;
+						}
+						if (moveY < topY) {
+							moveY = topY;
+						}
+						if (moveY > bottomY) {
+							moveY = bottomY;
+						}
+						$(this).css({
+							"left": moveX + sX - startX,
+							"top": moveY + sY - startY,
+						});
+					},
+					touchend:function(e){
+						$(this).css({
+							"left": moveX + sX - startX,
+							"top": moveY + sY - startY
+						});
+					}
+				});
+			};
+			
+			function judgeStudy(){
+				console.log(1)
+				$.ajax({
+					url:"updateStudyIsComplete.do",
+					data:{"userId":userId,"courseId":courseId,"coursewareId":coursewareId},
+					type:"post",
+					dataType:'json',
+					success:function(data){
+						if(data.count==1){
+						//alert("success")
+						}
+					}
+				});
+			}
+			
+		</script>
+	</body>
+</html>

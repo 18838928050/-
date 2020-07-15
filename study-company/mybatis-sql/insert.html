@@ -1,0 +1,33 @@
+<insert id="insert" parameterType="com.allianity.classroom.domain.ClassroomExam">
+		insert into classroom_exam (create_date,modify_date,name,start_date,end_date,duration,repeat_exam,exam_paper_id,is_delete,exam_desc,exam_channel,exam_comcode)
+			values (#{createDate,jdbcType=TIMESTAMP},#{modifyDate,jdbcType=TIMESTAMP},#{name,jdbcType=VARCHAR},#{startDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP},#{duration,jdbcType=VARCHAR},#{repeatExam,jdbcType=INTEGER},#{examPaperId,jdbcType=INTEGER},#{isDelete,jdbcType=INTEGER},#{examDesc,jdbcType=VARCHAR},#{examChannel,jdbcType=VARCHAR},#{examComcode,jdbcType=VARCHAR})
+	</insert>
+
+
+
+	<insert id="insertCourseware" parameterType="com.allianity.classroom.domain.ClassroomOurseware">
+ 	    <selectKey keyProperty="coursewareId" resultType="int" order="BEFORE">
+			SELECT SEQ_COURSEWAREID.NEXTVAL as coursewareId FROM DUAL
+		</selectKey>
+ 		insert into CLASSROOM_OURSEWARE(
+ 			id,
+ 		    <if test="coursewareId != null and coursewareId != 0">COURSEWARE_ID,</if>
+ 			<if test="coursewareContent != null and coursewareContent != ''">COURSEWARE_CONTENT,</if>
+ 			<if test="duration != null and duration != ''">DURATION,</if>
+ 			<if test="comcode != null and comcode != ''">comcode,</if>
+ 			start_date,
+ 			end_date,
+ 			create_date,modify_date
+ 		)values(
+ 			rawtohex(sys_guid()),
+ 			<if test="coursewareContent != null and coursewareContent != ''">#{coursewareContent},</if>
+ 			<if test="duration != null and duration != ''">#{duration},</if>
+ 			<if test="comcode != null and comcode != ''">#{comcode},</if>
+ 			#{startDate},
+ 			#{endDate},
+ 			sysdate,sysdate
+ 		)
+	</insert>
+
+
+	

@@ -1,0 +1,1 @@
+<img src="../images/sanyi/companyProfile/companyProfile_img7.png" alt=""/>

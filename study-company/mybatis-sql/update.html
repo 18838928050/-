@@ -1,0 +1,22 @@
+<update id="update" parameterType="com.allianity.classroom.domain.ClassroomExam">
+	update classroom_exam set 
+	modify_date = #{modifyDate, jdbcType=TIMESTAMP},
+	name = #{name, jdbcType=VARCHAR},
+	start_date = #{startDate, jdbcType=TIMESTAMP},
+	end_date = #{endDate, jdbcType=TIMESTAMP},
+	duration = #{duration, jdbcType=VARCHAR},
+	repeat_exam = #{repeatExam, jdbcType=INTEGER},
+	exam_paper_id = #{examPaperId, jdbcType=INTEGER},
+	is_delete = #{isDelete, jdbcType=INTEGER},
+	exam_desc = #{examDesc, jdbcType=VARCHAR},
+	exam_channel = #{examChannel, jdbcType=VARCHAR},
+	exam_comcode = #{examComcode, jdbcType=VARCHAR}
+	where id = #{id,jdbcType=INTEGER}
+</update>
+
+
+<update id="deleteExamPaperQu" parameterType="int">
+	update classroom_exam_paper_qu
+	set is_delete = 1
+	where paper_id = #{paperId} and is_delete = 0
+</update>
