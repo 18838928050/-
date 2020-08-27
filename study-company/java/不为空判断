@@ -1,1 +1,1 @@
-productCode != null && !"".equals(productCode) && !"null".equals(productCode)
+	productCode != null && !"".equals(productCode) && !"null".equals(productCode)

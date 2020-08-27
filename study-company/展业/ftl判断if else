@@ -1,0 +1,7 @@
+   <#if ORDER.packageNo == '306050A'>
+                <td colspan="5">安家宝产品A</td>
+            <#elseif ORDER.packageNo=='306050B'>
+                <td colspan="5">安家宝产品B</td>
+            <#else>
+                
+            </#if>

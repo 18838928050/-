@@ -37,3 +37,18 @@ function betweenTime(date1,date2){
 	        var seconds=Math.round(leave3/1000)
 	        alert(" 相差 "+days+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒")
 			}
+
+得到今天的日期：2020-08-04
+function checkTodayDate() {
+    var myDate = new Date();
+    var mydate = myDate.getDate();
+    if(myDate.getDate()<10){
+        mydate = '0'+ myDate.getDate();  //补齐
+    }
+    var month = myDate.getMonth()+1;
+    if (month < 10){
+        month = '0'+ month;
+    }
+    var today = myDate.getFullYear() + '-' + (month) + '-' + mydate;
+    return today;
+}
