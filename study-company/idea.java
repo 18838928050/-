@@ -45,3 +45,6 @@ foreach :
 写一个string不等于null,string.notnull
 
 翻译：transport shift+q:翻译  ctrl+shift+s ：切换翻译源
+
+
+在上方插入一行：ctrl+alt+enter

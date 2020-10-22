@@ -61,6 +61,10 @@ oracle like多条件查询：
 select * from LI_ORD_NOTICE where ORDER_no ='2020072909233203724' and IMPART_GROUP_NO='A01'
 and  REGEXP_LIKE(IMPART_CODE, '(A0108|A0107|A0109)');
 
+查询createdate是今天的数据：
+select * from DW_LOGIN_RECORD where  AGENTCODE='63002434'  
+and  CREATE_DATE between TO_DATE('2020-09-18 00:00:00','YYYY-MM-DD hh24:Mi:ss') and TO_DATE('2020-09-18 23:59:59','YYYY-MM-DD hh24:Mi:ss')
+
 
 ALTER TABLE "YDZY_SEC_DEV"."LI_ORD_ORDER" ADD (SB_LOCATION varchar2(32));
 COMMENT ON COLUMN "YDZY_SEC_DEV"."LI_ORD_ORDER"."SBNO" IS '社保账号';
@@ -68,3 +72,16 @@ COMMENT ON COLUMN "YDZY_SEC_DEV"."LI_ORD_ORDER"."SB_LOCATION" IS '社保所在�
 
 Oracle删除一行：
 ALTER TABLE "YDZY_SEC_DEV"."LI_ORD_ORDER" drop column SB_LOCATION2;
+
+
+update CS_SALE_AUTH set START_SALE_TIME =to_date('2020-09-01 00:00:00','yyyy-MM-dd hh24:Mi:ss')  where id='71'
+
+oracle查询所有表的行数
+select t.table_name,t.num_rows from all_tables t
+
+oracle like 写法：
+select distinct doc_name,DOC_URL from LI_PM_PRODUCT_DOC where DOC_type='9'
+    and DOC_NAME like '%' ||#{docName,jdbcType=VARCHAR}|| '%'
+    or DOC_URL like '%' ||#{docName,jdbcType=VARCHAR}|| '%'
+
+    update DW_OUTER_MANAGE set CREATE_TIME=to_date('2020-09-25 08:02:01','yyyy-mm-dd hh24:mi:ss')  where AGENT_CODE='63002434';

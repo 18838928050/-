@@ -19,5 +19,10 @@ cd /app/ydzy_appqz_uat/myLog
 tail -f dwrswapUat.log
 
 掌上宝前置dat：
-cd /app/ydzy_appqz_dat/myLog
-tail -f dwrswapDat.log
+
+cd /app/log/myLog/
+
+tail -f dwrsmiPrd.log
+
+
+cd /app/yxprd/2020/9/25/

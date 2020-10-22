@@ -1,6 +1,8 @@
 升级表结构：
 
-
+dev:
+CREATE TABLE "YDZY_SEC_DEV"."CS_SALE_AUTH" 
+TABLESPACE "DWDATA_62"
 
 dat：
 CREATE TABLE "YDZY_SEC_DAT"."CS_SB_INFO" 
@@ -24,3 +26,7 @@ COMMENT ON COLUMN "YDZY_SEC_DEV"."LI_ORD_ORDER"."SB_LOCATION" IS '社保所在�
 
 Oracle删除一行：
 ALTER TABLE "YDZY_SEC_DEV"."LI_ORD_ORDER" drop column SB_LOCATION2;
+
+
+alter table asset_orders add remark varchar2(255);
+

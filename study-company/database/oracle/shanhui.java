@@ -19,6 +19,7 @@ select * from v$option where parameter = 'Partitioning';
 --返回30分钟之前的数据
 flashback table DW_OUTER_MANAGE to timestamp( systimestamp - 30/1440);
 
+	alter table LI_PM_PRODUCT_DOC enable row movement;
 
 
 --不小心删除表的返回操作
@@ -27,3 +28,4 @@ flashback table classroom_course to before drop;
 
 
 
+D:\workspace\workspaceZY\planBook\product-planBook\target

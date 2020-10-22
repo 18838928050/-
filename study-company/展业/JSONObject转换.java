@@ -53,7 +53,9 @@ ordOrders.add(ordOrder);
 JSONArray jsonArray = JSONArray.fromObject(ordOrders);
 System.out.println(jsonArray);
         //输出结果如下
-//[{"nextOpenBankProvince":"","orderType":"","isOtherSec":"","accBankName":"bankname","audioVideoFlag":"0","payTime":"","cancelStatus":"","disposeOrNot":"","scanTime":"","accno":"","lqAccBankCode":"","payeeType":"","selfInsurancedFlag":"","uploadStatus":"","isCoreWithhold":"","eMail":"","nextAccno":"","policyOptions":"","achievementChannel":"","id":0,"insureValue":"","bonusGetFlag":"","nextOpenBankCity":"","nextAcctype":"","underWritingStatus":"","sdate":"","agreement":"","orderNo":"","orderCreateTime":"","lqAccName":"","acceptStatus":"","scanDate":"","agreeMent":"","disputesDisposeContent":"","tdate":"","isAutoDeduct":"","asyncKey":"","asyncFlag":"","isAutoInsurance":"","nextAccBankName":"","insureName":"","note":"","bonusGetAge":"","highRiskSign":"","openBankCity":"","isNeedSlu":"","lqAccno":"","policyCode":"","doublePushFlag":"","packageNo":"","insuranceCode":"","openBankProvince":"","sbPrem":0,"nextAccBankCode":"","guardianName":"","guardianValue":"","insureCode":"","paySuccessTime":"","accname":"","accBankCode":"bankcode","amount":0,"lqAccBankName":"","sbno":"","actualAmount":0,"empNo":"","acctype":"","otherStatus":"","payNoticeNum":"","bonusGetType":"","policyCount":0,"guardianCode":"","isAutoLoan":"","payStatus":"","sbLocation":"","nextAccname":""},{"nextOpenBankProvince":"","orderType":"","isOtherSec":"","accBankName":"bankname","audioVideoFlag":"0","payTime":"","cancelStatus":"","disposeOrNot":"","scanTime":"","accno":"","lqAccBankCode":"","payeeType":"","selfInsurancedFlag":"","uploadStatus":"","isCoreWithhold":"","eMail":"","nextAccno":"","policyOptions":"","achievementChannel":"","id":0,"insureValue":"","bonusGetFlag":"","nextOpenBankCity":"","nextAcctype":"","underWritingStatus":"","sdate":"","agreement":"","orderNo":"","orderCreateTime":"","lqAccName":"","acceptStatus":"","scanDate":"","agreeMent":"","disputesDisposeContent":"","tdate":"","isAutoDeduct":"","asyncKey":"","asyncFlag":"","isAutoInsurance":"","nextAccBankName":"","insureName":"","note":"","bonusGetAge":"","highRiskSign":"","openBankCity":"","isNeedSlu":"","lqAccno":"","policyCode":"","doublePushFlag":"","packageNo":"","insuranceCode":"","openBankProvince":"","sbPrem":0,"nextAccBankCode":"","guardianName":"","guardianValue":"","insureCode":"","paySuccessTime":"","accname":"","accBankCode":"bankcode","amount":0,"lqAccBankName":"","sbno":"","actualAmount":0,"empNo":"","acctype":"","otherStatus":"","payNoticeNum":"","bonusGetType":"","policyCount":0,"guardianCode":"","isAutoLoan":"","payStatus":"","sbLocation":"","nextAccname":""}]
+
+//[{"nextOpenBankProvince":"","orderType":"","isOtherSec":"","accBankName":"bankname","audioVideoFlag":"0","payTime":"","cancelStatus":"","disposeOrNot":"","scanTime":"","accno":"","lqAccBankCode":"","payeeType":"","selfInsurancedFlag":"","uploadStatus":"","isCoreWithhold":"","eMail":"","nextAccno":"","policyOptions":"","achievementChannel":"","id":0,"insureValue":"","bonusGetFlag":"","nextOpenBankCity":"","nextAcctype":"","underWritingStatus":"","sdate":"","agreement":"","orderNo":"","orderCreateTime":""},
+//{"nextOpenBankProvince":"","orderType":"","isOtherSec":"","accBankName":"bankname","audioVideoFlag":"0","payTime":"","cancelStatus":"","disposeOrNot":"","scanTime":"","accno":"","lqAccBankCode":"","payeeType":"","selfInsurancedFlag":"","uploadStatus":"","isCoreWithhold":"","eMail":"","nextAccno":"","policyOptions":"","achievementChannel":"","id":0,"insureValue":"","bonusGetFlag":"","nextOpenBankCity":"","nextAcctype":"","underWritingStatus":"","sdate":"","agreement":"","orderNo":"","orderCreateTime":""}]
 //获取第一个json里面的accBankname的值：
 String accBankName = (String) jsonArray.getJSONObject(0).get("accBankName");
 System.out.println(accBankName);
@@ -72,3 +74,52 @@ json.put("msg", "节日提醒列表为空");
 String json2 = com.alibaba.fastjson.JSONObject.parseObject(String.valueOf(json)).toString();
 System.out.println(json2);
 //输出：{"msg":"节日提醒列表为空","code":"0"}
+
+
+// JSON.parseObject的几种用法
+一.result格式:
+{    
+   "success":"true";  
+   "returnAddress":"123"
+ }
+
+JSONObject jsonObject=JSON.parseObject(result);      //转换成object  
+jsonObject.getString("returnAddress")    //获取object中returnAddress字段;      
+
+getString("returnAddress")    //获取object中returnAddress字段;                                                       
+
+
+二.result格式
+{   
+      "success":"true";   
+      "data":{        
+               "shop_uid":"123";  
+              };
+ }
+
+ JSONObject shop_user =JSON.parseObject(result); 
+ JSON.parseObject(shop_user .getString("data")).getString("shop_uid")
+
+
+ {   
+      "success":"true";   
+      "data":{        
+               "shop_uid":"123";  
+                 {         "shop_name":"张三"     }
+              };
+ }
+
+
+三.result格式
+{     "success":"true";     "data":[{         "shop_uid":"123";     },     {         "shop_name":"张三"     }]}
+
+JSONArray detail = JSON.parseArray(result);
+for (int i=0; i<detail.size();i++){  
+  if(detail.get(i)!=null||!detail.get(i).equals("")){   
+     JSONArray detailChild =detail.getJSONArray(i);        
+        if(detailChild.getInteger(1)>Integer.valueOf(ship.get("shiptime").toString())){
+            ship.put("shiptime",detailChild.getInteger(1));           
+            ship.put("desc",detailChild.getString(0));       
+            }     
+         }
+      }

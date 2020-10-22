@@ -11,9 +11,9 @@ and  REGEXP_LIKE(IMPART_CODE, '(A0108|A0107|A0109)');
 
 
 logFilePathExample example=new logFilePathExample();
-example.Criteria criteria1=example.createCriteria();
+logFilePathExample.Criteria criteria1=example.createCriteria();
 criteria1.andRemarksLike("%"+fileName+"%");
-example.Criteria criteria2=example.createCriteria();
+logFilePathExample.Criteria criteria2=example.createCriteria();
 criteria2.andExplainLike("%"+fileName+"%");
 example.or(criteria1);
 example.or(criteria2);
@@ -29,4 +29,23 @@ productAchievementExample.createCriteria().andAgentcodeEqualTo(om.getAgentCode()
 .andStartDateLessThanOrEqualTo(new Date())
 .andEndDateGreaterThanOrEqualTo(new Date());
 List<PmProductAchievement> productAchievements = productAchievementMapper
-.selectByExample(productAchievementExample);
+.selectByExample(productAchievementExample);。
+
+//工号登陆，当日00：00：00至23：59：59之间，登陆错误的数据
+DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+String benginDateStr=Calendar.getInstance().get(Calendar.YEAR)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.DATE)+" 00:00:00";
+String endDateStr=Calendar.getInstance().get(Calendar.YEAR)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.DATE)+" 23:59:59";
+LoginRecordExample loginRecordExample = new LoginRecordExample();
+loginRecordExample.createCriteria().andAgentcodeEqualTo(outManagerList.get(0).getAgentCode())
+.andLoginResultEqualTo("0")
+.andCreateDateBetween(format.parse(benginDateStr), format.parse(endDateStr));
+
+// OrderBy
+String benginDateStr=Calendar.getInstance().get(Calendar.YEAR)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.DATE)+" 00:00:00";
+String endDateStr=Calendar.getInstance().get(Calendar.YEAR)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.DATE)+" 23:59:59";
+
+
+LoginRecordExample loginRecordExample = new LoginRecordExample();
+loginRecordExample.createCriteria().andAgentcodeEqualTo(outManagerList.get(0).getAgentCode())
+.andCreateDateBetween(format.parse(benginDateStr), format.parse(endDateStr));
+loginRecordExample.setOrderByClause("CREATE_DATE DESC");

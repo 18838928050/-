@@ -22,3 +22,5 @@ input定位：
  var dangci= $("div[riskcode='207020']").children().find("div[name='level']").attr("value");
  attr是jquery的方法
  getAttribute是js的方法
+
+var tbbbrsex= $("#tbrsex").hasClass("mui-active") == true ? "男" : "女";
