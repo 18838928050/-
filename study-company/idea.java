@@ -48,3 +48,5 @@ foreach :
 
 
 在上方插入一行：ctrl+alt+enter
+
+ctrl+k :控制台查找快捷键

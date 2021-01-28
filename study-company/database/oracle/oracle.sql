@@ -85,3 +85,38 @@ select distinct doc_name,DOC_URL from LI_PM_PRODUCT_DOC where DOC_type='9'
     or DOC_URL like '%' ||#{docName,jdbcType=VARCHAR}|| '%'
 
     update DW_OUTER_MANAGE set CREATE_TIME=to_date('2020-09-25 08:02:01','yyyy-mm-dd hh24:mi:ss')  where AGENT_CODE='63002434';
+
+
+-----substr函数格式   (俗称：字符截取函数)
+1、select substr('HelloWorld',0,3) value from dual; //返回结果：Hel，截取从“H”开始3个字符
+2、select substr('HelloWorld',1,3) value from dual; //返回结果：Hel，截取从“H”开始3个字符
+3、select substr('HelloWorld',2,3) value from dual; //返回结果：ell，截取从“e”开始3个字符
+4、select substr('HelloWorld',0,100) value from dual; //返回结果：HelloWorld，100虽然超出预处理的字符串最长度，但不会影响返回结果，系统按预处理字符串最大数量返回。
+5、select substr('HelloWorld',5,3) value from dual; //返回结果：oWo
+6、select substr('Hello World',5,3) value from dual; //返回结果：o W (中间的空格也算一个字符串，结果是：o空格W)
+7、select substr('HelloWorld',-1,3) value from dual; //返回结果：d （从后面倒数第一位开始往后取1个字符，而不是3个。原因：下面红色 第三个注解）
+8、select substr('HelloWorld',-2,3) value from dual; //返回结果：ld （从后面倒数第二位开始往后取2个字符，而不是3个。原因：下面红色 第三个注解）
+9、select substr('HelloWorld',-3,3) value from dual; //返回结果：rld （从后面倒数第三位开始往后取3个字符）
+10、select substr('HelloWorld',-4,3) value from dual; //返回结果：orl （从后面倒数第四位开始往后取3个字符）
+----instr()函数的格式  （俗称：字符查找函数）
+1.select instr('helloworld','l') from dual; --返回结果：3    默认第一次出现“l”的位置
+2 select instr('helloworld','lo') from dual; --返回结果：4    即“lo”同时(连续)出现，“l”的位置
+3 select instr('helloworld','wo') from dual; --返回结果：6    即“w”开始出现的位置
+select instr('helloworld','l',2,2) from dual;  --返回结果：4    也就是说：在"helloworld"的第2(e)号位置开始，查找第二次出现的“l”的位置
+select instr('helloworld','l',3,2) from dual;  --返回结果：4    也就是说：在"helloworld"的第3(l)号位置开始，查找第二次出现的“l”的位置
+select instr('helloworld','l',4,2) from dual;  --返回结果：9    也就是说：在"helloworld"的第4(l)号位置开始，查找第二次出现的“l”的位置
+select instr('helloworld','l',-1,1) from dual;  --返回结果：9    也就是说：在"helloworld"的倒数第1(d)号位置开始，往回查找第一次出现的“l”的位置
+select instr('helloworld','l',-2,2) from dual;  --返回结果：4    也就是说：在"helloworld"的倒数第2(l)号位置开始，往回查找第二次出现的“l”的位置
+select instr('helloworld','l',2,3) from dual;  --返回结果：9    也就是说：在"helloworld"的第2(e)号位置开始，查找第三次出现的“l”的位置
+select instr('helloworld','l',-2,3) from dual; --返回结果：3    也就是说：在"helloworld"的倒数第2(l)号位置开始，往回查找第三次出现的“l”的位置
+
+
+
+常熟医保调整时间sql:
+select max(TO_NUMBER(a.id)) from CS_SALE_AUTH a; 
+
+update CS_SALE_AUTH set start_sale_time =TO_DATE('2020-10-08 15:56:55', 'YYYY-MM-DD hh24:Mi:ss') WHERE  RISK_CODE='306050B';
+update CS_SALE_AUTH set end_sale_time =TO_DATE('9999-10-08 15:56:55', 'YYYY-MM-DD hh24:Mi:ss') WHERE  RISK_CODE='306050B';
+
+
+oracle查询一个表有多少列：
