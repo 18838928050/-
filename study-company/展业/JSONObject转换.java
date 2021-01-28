@@ -43,6 +43,12 @@ System.out.println(aa);
 //输出结果如下
 //{"userName":"admin"}
 
+/**
+***String类型转换为JSONArray
+*/
+[{"addPrem":"1000","partReceive":"10","getAge":"21-22"}
+,{"addPrem":"10000","partReceive":"100","getAge":"23-31"}]
+ JSONArray parse = JSONArray.parseArray(supplmntryPre1);
 
 /**
 ***List类型转换为JSONArray

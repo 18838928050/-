@@ -9,7 +9,6 @@ tail -f dwrsmiUat.log
 
 掌上宝前置dat：
 cd /app/ydzy_appqz_dat/myLog
-
 tail -f dwrswapDat.log
 掌上宝后置dat:
 cd /app/ydzy_appzt_dat_domain/myLog/
@@ -35,13 +34,13 @@ cat -n ./dwrsmiDat.log | grep "1888" 定位错误的行数
 
 cat -n ./dwrsmiDat.log | tail -n +8050|head -n 5  
 cat -n ./MServer_Ywzsbqz1_Weblogic.log | grep "本机的IP"
-cat -n ./MServer_Ywzsbqz1_Weblogic.log | grep "执行会议计划消息提醒"
+cat -n ./dwrsmiUat.log | grep "2020121114533527919"
 
 
 cat -n ./MServer_Ywzsbqz2_Weblogic.log | grep "访问接口:"
 
 cat -n ./dwrsmiDat.log | grep "过滤掉异常数据后的数据库查询结果"
-cat -n ./dwrsmiPrd.log.2020-11-11.log | grep "推送双录信息成功---订单号：2020111115172243205"
+cat -n ./dwrsmiPrd.log.2021-01-11.log | grep "续期应收清单查询"
 cat -n ./dwrsmiPrd.log.2020-11-11.log | grep "推送双录信息成功---订单号：20201111659231"
 
 "推送双录信息成功---订单号：2020111115172243205"

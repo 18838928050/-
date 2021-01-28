@@ -120,3 +120,20 @@ update CS_SALE_AUTH set end_sale_time =TO_DATE('9999-10-08 15:56:55', 'YYYY-MM-D
 
 
 oracle查询一个表有多少列：
+
+今天已出单；
+select * from li_ord_order where order_no like '2021%' and accept_status='1'
+
+查询今天十点之后已承保保单个数：
+date是varchar类型
+SELECT count(*) FROM li_ord_order t WHERE accept_status='1'and order_no like '2021%' AND to_date(t.order_create_time,'yyyy-MM-dd HH24:MI:SS')
+between to_date('2021-01-01 10:00:00','yyyy-MM-dd HH24:MI:SS') and to_date('2021-01-01 23:59:59','yyyy-MM-dd HH24:MI:SS') ;  
+  
+
+
+  查询今天承保的业绩金额：
+
+SELECT sum(amount) FROM li_ord_order t WHERE  order_no in(
+select substr(d.remarks,0,19) from DW_LOG_FILEPATH d where  d.create_date
+between to_date('2021/01/01 00:00:00','yyyy/MM/dd HH24:MI:SS') and to_date('2021/01/01 23:59:59','yyyy/MM/dd HH24:MI:SS') 
+and explain like '%承保请求%') and accept_status='1'

@@ -1,16 +1,25 @@
 表：
-DW_OUTER_MANAGE :AGENT_COM:中介机构代码  MANAGE_COM:管理机构
 
+
+SELECT * FROM LI_PM_PRODUCT_ACHIEVEMENT where  RISK_CODE = '201A10' ;
+SELECT * FROM LI_PM_PRODUCT_ORG WHERE PRODUCT_CODE='201A10';
+SELECT * FROM LI_PM_PRODUCT_ATTR WHERE PRODUCT_CODE='201A10' ;
+SELECT * FROM LI_PM_PRODUCT_SALE WHERE RISKCODE='201A10';
+li_ord_payinfo：支付流水，支付状态，mqid是business_no
+
+DW_OUTER_MANAGE :AGENT_COM:中介机构代码  MANAGE_COM:管理机构
+LI_CONFIG_INFO：掌上宝相关配置
 
 DW_RENEWAL -- 续期信息表  CONTNO：保单号（相当于insurance_no）  ORDERNO：流水号
 --select * from dw_renewal where cont_no ='0000318668211888'
-DW_RENEWAL_SHARE  --回执回销表  CONTNO：保单号（相当于policy_no） AGENTCODE:工号  DEAL_TYPE =1 代表已经回执回销了
+DW_RENEWAL_SHARE  --回执回销表  CONTNO：保单号（相当于policy_code） AGENTCODE:工号  DEAL_TYPE =1 代表已经回执回销了
 
 --select * from DW_RENEWAL_SHARE where cont_no ='0000318668211888'
 
 DW_LOG_FILEPATH --报文记录表 EXPLAIN：报文相关功能 REMARKS ：保单号或流水号 paystatus：支付状态
+--select * from DW_LOG_FILEPATH where remarks like '%2021010411100147987%'
 
-
+li_pm_bankinfo：银行限额
 
 LI_ORD_RISK -- 保单险种表  投保之后，主险和选择过的附加险信息
 
@@ -26,6 +35,7 @@ DW_MANAGECOM_INFO --机构信息同步表 ， REGION_NAME:所属地区  COM_CODE
 --查询工号是哪个地区的
 select * from DW_MANAGECOM_INFO where com_code like ('8604%') --861010
 
+PM_SIGN_INFO:建议书pdf签名
 
 DW_LACOM_INFO  --代理机构信息同步表
 --select * from DW_LACOM_INFO where agent_com in('10002','10047','88000');

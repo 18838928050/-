@@ -16,6 +16,6 @@ part-common :工具服务
 part-one :试算
 part-two :出单
 part-three:配置掌上宝菜单 轮播图
-part-voucher:签名
+part-voucher:签名，影像上传
 
 打包顺序：common ->
